@@ -1,0 +1,21 @@
+{
+    "PackagesScripts":  [
+                            {
+                                "Name":  "SvmFix",
+                                "Version":  "1.0.0",
+                                "Sha256":  "5810A18CD6B25C786085434A9F309883201814759B98A52D0046B0849554FA66"
+                            }
+                        ],
+    "SingleScripts":  [
+                          {
+                              "Name":  "ExtractSkin0ImageIdMapToSd.sh",
+                              "Version":  "1.0.0",
+                              "Sha256":  "3EDDCA8CAA0606597C55DB2A41BF9F4FF8A48AEFE3B43D56F892E25FE66DB011"
+                          },
+                          {
+                              "Name":  "ExtractSkin0ImageMcfToSd.sh",
+                              "Version":  "1.0.0",
+                              "Sha256":  "59EFA466108D26E0D8BAEA68B84A3936543849ED0D8B5E4E46BFCDDEEC7B93EF"
+                          }
+                      ]
+}
