@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.ScriptsPage" Title="Scripts" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="12"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style x:Key="H" TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Accent2}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="FontSize" Value="13"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+  <Grid RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,*" Padding="10,6" RowSpacing="4" ColumnSpacing="10">
+    <Grid Grid.Row="0" Grid.ColumnSpan="2" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+      <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Always"><HorizontalStackLayout Spacing="0" HeightRequest="56">
+      <Button x:Name="OutToggle" IsVisible="False" Text="Show output" Clicked="OnOutToggle" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button Text="Import .sh" Clicked="OnImport" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button Text="Update (internet)" Clicked="OnUpdate" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button Text="Reload" Clicked="OnReload" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button x:Name="CancelBtn" Text="Cancel running script" Clicked="OnCancel" IsVisible="False" Background="{DynamicResource GlassDanger}" TextColor="White" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button Text="Copy log" Clicked="OnCopyLog" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button Text="Clear log" Clicked="OnClearLog" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,0,4"/>
+      </HorizontalStackLayout></ScrollView>
+    </Grid>
+    <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="0">
+      <Label Text="Update (internet) needs no unit connection. Tap a script for Run, Details or source: only running needs the unit (SSH, Write mode, typing RUN). The type tag is the script's own header, not a safety claim." FontSize="12" TextColor="{DynamicResource Warn}" LineBreakMode="WordWrap" MaxLines="3"/>
+      <Label x:Name="Info" FontSize="12" TextColor="{DynamicResource Muted}"/>
+    </VerticalStackLayout>
+    <CollectionView Grid.Row="2" x:Name="List" SelectionMode="None">
+      <CollectionView.ItemTemplate><DataTemplate>
+        <Grid ColumnDefinitions="*,Auto" Padding="12,6" MinimumHeightRequest="56">
+          <VerticalStackLayout VerticalOptions="Center"><Label Text="{Binding Name}" FontSize="15" LineBreakMode="TailTruncation"/><Label Text="{Binding Description}" FontSize="11" TextColor="{DynamicResource Muted}" MaxLines="1" LineBreakMode="TailTruncation"/><Label Text="{Binding VersionDisplay}" FontSize="11" TextColor="{DynamicResource Dim}"/></VerticalStackLayout>
+          <Label Grid.Column="1" Text="{Binding ScriptType, StringFormat='header: {0}'}" FontSize="11" TextColor="{DynamicResource Warn}" VerticalOptions="Center" Margin="8,0,0,0"/>
+          <Grid.GestureRecognizers><TapGestureRecognizer Tapped="OnTapped"/></Grid.GestureRecognizers></Grid>
+      </DataTemplate></CollectionView.ItemTemplate>
+    </CollectionView>
+    <Border x:Name="OutCard" Grid.Row="2" Grid.Column="1" Padding="10" Background="{DynamicResource GlassCard}" Stroke="{DynamicResource GlassStroke}" StrokeShape="RoundRectangle 12"><ScrollView x:Name="OutScroll"><Label x:Name="Out" FontFamily="monospace" FontSize="12" TextColor="{DynamicResource Muted2}" Text="Output of a running script appears here."/></ScrollView></Border>
+  </Grid>
+</ContentPage>

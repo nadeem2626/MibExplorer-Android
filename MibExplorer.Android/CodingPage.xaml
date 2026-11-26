@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.CodingPage" Title="Coding Center" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="10"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="44"/></Style>
+  </ContentPage.Resources>
+  <Grid RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,*" Padding="10,6" RowSpacing="4" ColumnSpacing="10">
+    <!-- one compact strip, 48 dp hit targets; the work area gets all remaining height -->
+    <Grid Grid.Row="0" Grid.ColumnSpan="2" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+      <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Always"><HorizontalStackLayout Spacing="0" HeightRequest="56">
+      <Button Text="Read from unit" Clicked="OnRead" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button x:Name="TabF" Text="Features" Clicked="OnTab" CommandParameter="F" FontSize="13" MinimumHeightRequest="48" HeightRequest="48" Padding="12,0" Margin="0,0,4,4"/>
+      <Button x:Name="TabR" Text="Raw" Clicked="OnTab" CommandParameter="R" FontSize="13" MinimumHeightRequest="48" HeightRequest="48" Padding="12,0" Margin="0,0,4,4"/>
+      <Button x:Name="TabC" Text="Changes" Clicked="OnTab" CommandParameter="C" FontSize="13" MinimumHeightRequest="48" HeightRequest="48" Padding="12,0" Margin="0,0,4,4"/>
+      <Button x:Name="TabH" Text="History" Clicked="OnTab" CommandParameter="H" FontSize="13" MinimumHeightRequest="48" HeightRequest="48" Padding="12,0" Margin="0,0,10,4"/>
+      <Button x:Name="WriteBtn" Text="Write unavailable" Clicked="OnWrite" IsEnabled="False" Background="{DynamicResource GlassDanger}" TextColor="White" MinimumHeightRequest="48" HeightRequest="48" Padding="14,0" FontSize="13" Margin="0,0,0,4"/>
+      </HorizontalStackLayout></ScrollView>
+      <Grid Grid.Column="1" VerticalOptions="Center">
+      <SearchBar x:Name="Search" Placeholder="Filter features" TextChanged="OnSearch" BackgroundColor="{DynamicResource CardSolid}" TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource Dim}" HeightRequest="48" WidthRequest="230"  Margin="0,0,0,0"/>
+      </Grid>
+    </Grid>
+    <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="0">
+      <Label Text="Read only. Writing coding is unavailable: the generic feature list is not verified for this unit." FontSize="12" TextColor="{DynamicResource Warn}" LineBreakMode="WordWrap" MaxLines="3"/>
+      <HorizontalStackLayout Spacing="12"><Label x:Name="Vin" TextColor="{DynamicResource Muted}" FontSize="12"/><Label x:Name="Status" FontSize="12" TextColor="{DynamicResource Muted}"/></HorizontalStackLayout>
+    </VerticalStackLayout>
+    <ScrollView x:Name="ListScroll" Grid.Row="2"><VerticalStackLayout x:Name="Body" Spacing="0" HorizontalOptions="Fill"/></ScrollView>
+    <Border x:Name="DetailCard" Grid.Row="2" Grid.Column="1" IsVisible="False" Padding="0"><ScrollView><VerticalStackLayout x:Name="Detail" Spacing="0"/></ScrollView></Border>
+  </Grid>
+</ContentPage>

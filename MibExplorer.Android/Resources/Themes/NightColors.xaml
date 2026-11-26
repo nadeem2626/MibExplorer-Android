@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MibExplorer.Android.Themes.NightColors">
+    <x:String x:Key="ThemeName">Night</x:String>
+    <Color x:Key="Bg">#0F1A22</Color>
+    <Color x:Key="Rail">#080F14</Color>
+    <Color x:Key="Rail2">#0B141A</Color>
+    <Color x:Key="Text">#E6EDF3</Color>
+    <Color x:Key="Muted">#9FB0BC</Color>
+    <Color x:Key="Muted2">#BFD2DC</Color>
+    <Color x:Key="Dim">#7B8A96</Color>
+    <Color x:Key="Dim2">#52626D</Color>
+    <Color x:Key="Accent">#3FB6C9</Color>
+    <Color x:Key="Accent2">#7FD3E0</Color>
+    <Color x:Key="OnPrimary">#06141A</Color>
+    <Color x:Key="OnSecondary">#F2FAFC</Color>
+    <Color x:Key="HeaderText">#E9FBFF</Color>
+    <Color x:Key="Warn">#E8B04B</Color>
+    <Color x:Key="WarnText">#E8D9A8</Color>
+    <Color x:Key="WarnBg">#2A2314</Color>
+    <Color x:Key="WarnStroke">#6B5A22</Color>
+    <Color x:Key="DangerText">#F28B82</Color>
+    <Color x:Key="DangerSolid">#B54848</Color>
+    <Color x:Key="OnOff">#C9D3DA</Color>
+    <Color x:Key="CardSolid">#18262F</Color>
+    <Color x:Key="Surface2">#24343F</Color>
+    <Color x:Key="Border">#27414F</Color>
+    <Color x:Key="SelBg">#17262F</Color>
+    <Color x:Key="SelTint">#1F3A46</Color>
+    <Color x:Key="SelTint2">#17333C</Color>
+    <Color x:Key="GlassStroke">#5C8392</Color>
+    <Color x:Key="SelectedStroke">#63D8EA</Color>
+    <Color x:Key="WriteOnStroke">#E5534B</Color>
+    <Color x:Key="FailText">#F3B6B6</Color>
+    <Color x:Key="DiffAddFg">#BFE8C0</Color>
+    <Color x:Key="DiffAddBg">#1E3A27</Color>
+    <Color x:Key="DiffDelFg">#F3B6B7</Color>
+    <Color x:Key="DiffDelBg">#43232A</Color>
+    <LinearGradientBrush x:Key="GlassCard" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#274556" Offset="0"/>
+        <GradientStop Color="#17303D" Offset="0.45"/>
+        <GradientStop Color="#21404F" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassPrimary" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#9BE3F0" Offset="0"/>
+        <GradientStop Color="#6CD0E1" Offset="0.48"/>
+        <GradientStop Color="#45B8CC" Offset="0.52"/>
+        <GradientStop Color="#2FA0B6" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassSecondary" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#4A6270" Offset="0"/>
+        <GradientStop Color="#2B4757" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassConnected" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#177A3D" Offset="0"/>
+        <GradientStop Color="#165F4C" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassOff" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#2C3A44" Offset="0"/>
+        <GradientStop Color="#222D36" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassDanger" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#C7352C" Offset="0"/>
+        <GradientStop Color="#962019" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassSelected" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#17687A" Offset="0"/>
+        <GradientStop Color="#1C4E66" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassHeader" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#1F6F82" Offset="0"/>
+        <GradientStop Color="#2B4A66" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GlassHeaderDanger" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#7A2622" Offset="0"/>
+        <GradientStop Color="#5A2236" Offset="1"/>
+    </LinearGradientBrush>
+</ResourceDictionary>

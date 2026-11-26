@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.AdaptationsPage" Title="Adaptations" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+  <Grid RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,*" Padding="10,6" RowSpacing="4" ColumnSpacing="10">
+    <Grid Grid.Row="0" Grid.ColumnSpan="2" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+      <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Always"><HorizontalStackLayout Spacing="0" HeightRequest="56">
+      <Button x:Name="IdBtn" Text="Read identity + load catalog" Clicked="OnIdentify" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button Text="History" Clicked="OnHistory" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,8,4"/>
+      <Button x:Name="PendBtn" IsVisible="False" Text="Pending changes (0)" Clicked="OnPending" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="16,0" FontSize="14" Margin="0,0,10,4"/>
+      </HorizontalStackLayout></ScrollView>
+      <Grid Grid.Column="1" VerticalOptions="Center">
+      <SearchBar x:Name="Search" Placeholder="Search groups or adaptations" TextChanged="OnSearch" BackgroundColor="{DynamicResource CardSolid}" TextColor="{DynamicResource Text}" HeightRequest="48" WidthRequest="230"  Margin="0"/>
+      </Grid>
+    </Grid>
+    <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="0">
+      <Label x:Name="Intro" Text="Reference list. Read the unit identity to load the matching catalog." FontSize="12" TextColor="{DynamicResource Warn}" LineBreakMode="WordWrap" MaxLines="3"/>
+      <Label x:Name="Status" FontSize="12" TextColor="{DynamicResource Accent2}" MaxLines="2" LineBreakMode="TailTruncation"/>
+    </VerticalStackLayout>
+    <CollectionView Grid.Row="2" x:Name="List" SelectionMode="Single" SelectionChanged="OnPick">
+      <CollectionView.ItemTemplate><DataTemplate>
+        <VerticalStackLayout Padding="12,6" Spacing="1" MinimumHeightRequest="56" VerticalOptions="Center">
+          <Label Text="{Binding Title}" FontSize="15" LineBreakMode="TailTruncation"/>
+          <Label Text="{Binding Sub}" FontSize="11" TextColor="{DynamicResource Muted}" LineBreakMode="TailTruncation"/>
+        </VerticalStackLayout>
+      </DataTemplate></CollectionView.ItemTemplate>
+    </CollectionView>
+    <Border x:Name="DetailCard" Grid.Row="2" Grid.Column="1" Padding="0" Background="{DynamicResource GlassCard}" Stroke="{DynamicResource GlassStroke}" StrokeShape="RoundRectangle 12">
+      <Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto,*">
+        <Button x:Name="BackBtn" IsVisible="False" Text="&#8249; Groups" Clicked="OnBack" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" HeightRequest="48" MinimumHeightRequest="48" Margin="8,6,0,0" Padding="14,0"/>
+        <Label x:Name="DetailTitle" Grid.Column="1" Text="Select a group" FontSize="18" FontAttributes="Bold" Margin="12,10,12,6" LineBreakMode="TailTruncation" VerticalOptions="Center"/>
+        <CollectionView Grid.Row="1" Grid.ColumnSpan="2" x:Name="Detail" SelectionMode="Single" SelectionChanged="OnPickDetail">
+          <CollectionView.ItemTemplate><DataTemplate>
+            <VerticalStackLayout Padding="12,6" Spacing="1" MinimumHeightRequest="56" VerticalOptions="Center">
+              <Label Text="{Binding Title}" FontSize="15" LineBreakMode="TailTruncation"/>
+              <Label Text="{Binding Sub}" FontSize="11" TextColor="{DynamicResource Muted}" LineBreakMode="TailTruncation"/>
+            </VerticalStackLayout>
+          </DataTemplate></CollectionView.ItemTemplate>
+        </CollectionView>
+      </Grid>
+    </Border>
+  </Grid>
+</ContentPage>

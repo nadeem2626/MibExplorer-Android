@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.FilesPage" Title="Files" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="12"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style x:Key="H" TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Accent2}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="FontSize" Value="13"/></Style>
+    <Style TargetType="Entry"><Setter Property="TextColor" Value="{DynamicResource Text}"/><Setter Property="PlaceholderColor" Value="{DynamicResource Dim}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+  <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="12" RowSpacing="8">
+    <Grid Grid.Row="0">
+      <Grid x:Name="BrowseBar" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="6">
+        <ScrollView x:Name="CrumbScroll" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" VerticalOptions="Center">
+          <HorizontalStackLayout x:Name="Crumbs" Spacing="2"><Label x:Name="PathLabel" Text="Unit (remote)" FontAttributes="Bold" VerticalOptions="Center"/></HorizontalStackLayout>
+        </ScrollView>
+        <HorizontalStackLayout x:Name="BrowseActions" Grid.Column="1" Spacing="8" HorizontalOptions="End">
+          <Button x:Name="UpBtn" Text="Up" Clicked="OnUp" IsVisible="False" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="RefreshBtn" Text="Refresh" Clicked="OnRefresh" IsVisible="False" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="SelectBtn" Text="Select" Clicked="OnSelectToggle" IsVisible="False" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="HiddenBtn" Text="Hidden" Clicked="OnHidden" IsVisible="False" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="NewFolderBtn" Text="New folder" Clicked="OnNewFolder" IsVisible="False" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="SearchBtn" Text="Search" Clicked="OnSearchToggle" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="SortBtn" Text="Sort: Name" Clicked="OnSort" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="MoreBtn" Text="&#8942;" Clicked="OnOverflow" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" MinimumWidthRequest="48" Padding="0" FontSize="20"/>
+        </HorizontalStackLayout>
+      </Grid>
+      <Grid x:Name="SelectBar" IsVisible="False" ColumnDefinitions="Auto,*" ColumnSpacing="12">
+        <Label x:Name="SelCount" Text="0 selected" FontAttributes="Bold" FontSize="16" VerticalOptions="Center"/>
+        <ScrollView Grid.Column="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" HorizontalOptions="End"><HorizontalStackLayout Spacing="8">
+          <Button x:Name="DownloadSelBtn" Text="Download" Clicked="OnDownloadSelected" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="CopySelBtn" Text="Copy" Clicked="OnCopySelected" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="MoveSelBtn" Text="Move" Clicked="OnMoveSelected" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="RenameSelBtn" Text="Rename" Clicked="OnRenameSelected" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" Padding="14,0"/>
+          <Button x:Name="DeleteSelBtn" Text="Delete" Clicked="OnDeleteSelected" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource DangerText}" MinimumHeightRequest="48" Padding="14,0"/>
+        </HorizontalStackLayout></ScrollView>
+      </Grid>
+    </Grid>
+    <VerticalStackLayout Grid.Row="1" Spacing="4">
+    <Border x:Name="SysBanner" IsVisible="False" Padding="10,6" BackgroundColor="{DynamicResource WarnBg}" Stroke="{DynamicResource WarnStroke}" StrokeThickness="1" StrokeShape="RoundRectangle 10"><Label x:Name="SysBannerText" FontSize="12" TextColor="{DynamicResource WarnText}"/></Border>
+    <Entry x:Name="SearchEntry" Placeholder="Filter this folder by name" IsVisible="False" TextChanged="OnSearchChanged" ClearButtonVisibility="WhileEditing"/>
+    <Label x:Name="StatusLabel" FontSize="12" TextColor="{DynamicResource Muted}"/>
+    <Label x:Name="Note" FontSize="12" TextColor="{DynamicResource Muted}" Text=""/>
+    </VerticalStackLayout>
+    <Grid Grid.Row="2" RowDefinitions="Auto,*" RowSpacing="2">
+      <Grid ColumnDefinitions="36,32,*,110,70,48" Padding="6,0" ColumnSpacing="8" x:Name="HeaderRow">
+        <Label Grid.Column="2" Text="Name" FontSize="12" TextColor="{DynamicResource Dim}"/>
+        <Label Grid.Column="3" x:Name="HeadModified" Text="Modified" FontSize="12" TextColor="{DynamicResource Dim}"/>
+        <Label Grid.Column="4" Text="Size" FontSize="12" TextColor="{DynamicResource Dim}"/>
+      </Grid>
+      <BoxView Grid.Row="0" VerticalOptions="End" HeightRequest="1" Color="{DynamicResource Border}"/>
+      <CollectionView Grid.Row="1" x:Name="FileList" SelectionMode="None">
+      <CollectionView.ItemTemplate><DataTemplate>
+        <Grid ColumnDefinitions="36,32,*,110,70,48" Padding="6,2" ColumnSpacing="8" BackgroundColor="{Binding Bg}">
+          <Border Grid.Column="0" WidthRequest="24" HeightRequest="24" Padding="0" VerticalOptions="Center" HorizontalOptions="Center" IsVisible="{Binding ShowCheck}" Opacity="{Binding CheckOpacity}"
+                  BackgroundColor="{Binding CheckBg}" Stroke="{DynamicResource Accent}" StrokeThickness="2" StrokeShape="RoundRectangle 6">
+            <Label Text="{Binding CheckMark}" TextColor="{DynamicResource OnPrimary}" FontAttributes="Bold" FontSize="15" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnRowTapped"/></Border.GestureRecognizers>
+          </Border>
+          <Image Grid.Column="1" Source="{Binding Icon}" WidthRequest="24" HeightRequest="24"><Image.GestureRecognizers><TapGestureRecognizer Tapped="OnRowTapped"/></Image.GestureRecognizers></Image>
+          <Label Grid.Column="2" Text="{Binding Name}" VerticalOptions="Center" LineBreakMode="MiddleTruncation" Margin="0,14"><Label.GestureRecognizers><TapGestureRecognizer Tapped="OnRowTapped"/></Label.GestureRecognizers></Label>
+          <Label Grid.Column="3" Text="{Binding Modified}" IsVisible="{Binding ShowModified}" TextColor="{DynamicResource Muted}" FontSize="13" VerticalOptions="Center"/>
+          <Label Grid.Column="4" Text="{Binding SizeLabel}" TextColor="{DynamicResource Muted}" FontSize="13" VerticalOptions="Center"/>
+          <Button Grid.Column="5" Text="..." Clicked="OnRowMenu" Background="Transparent" TextColor="{DynamicResource Accent2}" MinimumHeightRequest="48" MinimumWidthRequest="48" Padding="0" FontSize="20"/>
+        </Grid>
+      </DataTemplate></CollectionView.ItemTemplate>
+      </CollectionView>
+    </Grid>
+    <Grid Grid.Row="3" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+      <Label x:Name="FooterLabel" FontSize="12" TextColor="{DynamicResource Dim}" Text="Write mode: OFF (read-only)" VerticalOptions="Center"/>
+      <Button Grid.Column="1" x:Name="UploadBtn" Text="+ Upload" Clicked="OnFab" Padding="22,0" MinimumHeightRequest="48" FontSize="16" CornerRadius="24"/>
+    </Grid>
+  </Grid>
+</ContentPage>

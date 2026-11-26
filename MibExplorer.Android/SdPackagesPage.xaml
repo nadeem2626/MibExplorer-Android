@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.SdPackagesPage" Title="SD packages" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="12"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+  <ScrollView><VerticalStackLayout Padding="16" Spacing="12" MaximumWidthRequest="760" HorizontalOptions="Fill">
+    <Label Text="These packages are installed from an SD card through the unit's own software update menu. This app only builds the zip. Copy it to the SD card yourself and unpack it in the card root." FontSize="12" TextColor="{DynamicResource Warn}"/>
+    <Border><VerticalStackLayout Spacing="6">
+      <Label Text="SSH installer" FontAttributes="Bold" TextColor="{DynamicResource Accent2}"/>
+      <Label Text="Installs the SSH server and your public key. The key pair is created on first use and kept inside this app. Building again reuses the same key." FontSize="12" TextColor="{DynamicResource Muted}"/>
+      <Label x:Name="KeyInfo" FontSize="12" FontFamily="monospace" TextColor="{DynamicResource Muted2}"/>
+      <Button Text="Build installer zip" Clicked="OnBuildInstall"/>
+      <Label Text="Key update (unit already has the SSH install)" FontAttributes="Bold" TextColor="{DynamicResource Accent2}"/>
+      <Label Text="Creates a NEW key and builds the same installer package. The package detects the existing install on the unit and only swaps the authorized key. Your current key is kept as 'previous' on this device. Until the package is installed from SD, the unit still accepts only the OLD key, so use Switch back to previous key to connect before that." FontSize="12" TextColor="{DynamicResource Muted}"/>
+      <Button Text="New key + build key-update zip" Clicked="OnBuildKeyUpdate" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+      <Button Text="Switch back to previous key" Clicked="OnPrevKey" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+    </VerticalStackLayout></Border>
+    <Border><VerticalStackLayout Spacing="6">
+      <Label Text="SSH uninstaller" FontAttributes="Bold" TextColor="{DynamicResource Accent2}"/>
+      <Label Text="Removes the SSH server and the key from the unit." FontSize="12" TextColor="{DynamicResource Muted}"/>
+      <Button Text="Build uninstaller zip" Clicked="OnBuildUninstall"/>
+    </VerticalStackLayout></Border>
+    <Label x:Name="Status" FontSize="12" TextColor="{DynamicResource Muted}"/>
+  </VerticalStackLayout></ScrollView>
+</ContentPage>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.AboutPage" Title="About" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassSecondary}"/><Setter Property="TextColor" Value="{DynamicResource OnSecondary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+  <ScrollView><VerticalStackLayout Padding="16" MaximumWidthRequest="560" HorizontalOptions="Fill">
+    <Border Padding="0" Background="{DynamicResource GlassCard}" Stroke="{DynamicResource GlassStroke}" StrokeThickness="1" StrokeShape="RoundRectangle 18">
+      <VerticalStackLayout Spacing="0">
+        <Border StrokeThickness="0" Padding="0" Background="{DynamicResource GlassHeader}" StrokeShape="RoundRectangle 17,17,0,0">
+          <Label Text="ABOUT" FontAttributes="Bold" FontSize="13" TextColor="{DynamicResource HeaderText}" Padding="12,8" VerticalTextAlignment="Center"/>
+        </Border>
+        <VerticalStackLayout Padding="20,22" Spacing="8" HorizontalOptions="Fill">
+          <Image x:Name="LogoImg" WidthRequest="84" HeightRequest="84" HorizontalOptions="Center"/>
+          <Label Text="MibExplorer" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+          <Label x:Name="VersionLbl" FontSize="14" TextColor="{DynamicResource Muted}" HorizontalTextAlignment="Center"/>
+          <Label Text="Built and developed by Nadeem." FontSize="15" HorizontalTextAlignment="Center" Margin="0,8,0,0"/>
+          <Label Text="This Android app, its development and its concept are based on the original code by djskual: github.com/djskual/MibExplorer" FontSize="15" HorizontalTextAlignment="Center"/>
+          <Button Text="Licenses" Clicked="OnLicenses" HorizontalOptions="Center" WidthRequest="200" Margin="0,10,0,0"/>
+        </VerticalStackLayout>
+      </VerticalStackLayout>
+    </Border>
+  </VerticalStackLayout></ScrollView>
+</ContentPage>

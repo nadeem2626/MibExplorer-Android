@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.ConnectPage" Title="Connect" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="12"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style x:Key="H" TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource HeaderText}"/><Setter Property="TextTransform" Value="Uppercase"/><Setter Property="Padding" Value="12,8"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="FontSize" Value="13"/><Setter Property="VerticalTextAlignment" Value="Center"/></Style>
+    <Style x:Key="HeadBox" TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassHeader}"/><Setter Property="StrokeThickness" Value="0"/><Setter Property="Padding" Value="0"/><Setter Property="StrokeShape"><Setter.Value><RoundRectangle CornerRadius="17,17,0,0"/></Setter.Value></Setter></Style>
+    <Style TargetType="Entry"><Setter Property="TextColor" Value="{DynamicResource Text}"/><Setter Property="PlaceholderColor" Value="{DynamicResource Dim}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+  <Grid x:Name="Root" ColumnDefinitions="*,*" RowDefinitions="*" Padding="10,6" ColumnSpacing="10">
+    <ScrollView x:Name="LeftCol"><VerticalStackLayout x:Name="LeftStack" Spacing="10">
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="Saved units" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="8">
+      <VerticalStackLayout x:Name="UnitsList" Spacing="8"/>
+      <Border x:Name="AddUnitCard" Padding="12" Background="{DynamicResource GlassCard}" Stroke="{DynamicResource GlassStroke}" StrokeShape="RoundRectangle 12">
+        <VerticalStackLayout Spacing="2"><Label Text="Add a unit" FontAttributes="Bold" FontSize="16"/><Label Text="IP, port, user" TextColor="{DynamicResource Muted}"/></VerticalStackLayout>
+        <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnAddUnit"/></Border.GestureRecognizers>
+      </Border>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="Network" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="8">
+      <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never"><HorizontalStackLayout Spacing="8">
+        <Button Text="Use Wi-Fi network" Clicked="OnBind" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="14,0"/>
+        <Button Text="Detect unit IP" Clicked="OnDetect" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" MinimumHeightRequest="48" HeightRequest="48" Padding="14,0"/>
+      </HorizontalStackLayout></ScrollView>
+      <Label x:Name="StatusLabel" Text="Not connected" TextColor="{DynamicResource Muted}"/>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+    </VerticalStackLayout></ScrollView>
+    <ScrollView x:Name="RightCol" Grid.Column="1"><VerticalStackLayout x:Name="RightStack" Spacing="10">
+    <Border x:Name="EditCard" IsVisible="False" Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label x:Name="EditHeading" Text="Unit details" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="8">
+      <Label Text="Presets only fill in a name and IP. Protocol, port and user are defaults: edit them to match your unit. Telnet and FTP send the password unencrypted." FontSize="12" TextColor="{DynamicResource Muted}"/>
+      <Entry x:Name="NameEntry" Placeholder="Profile name"/>
+      <Picker x:Name="ProtocolPicker" Title="Protocol" TextColor="{DynamicResource Text}" TitleColor="{DynamicResource Dim}"/>
+      <Entry x:Name="HostEntry" Placeholder="Unit IP"/>
+      <Grid ColumnDefinitions="96,*" ColumnSpacing="8"><Entry x:Name="PortEntry" Text="22" Keyboard="Numeric" Placeholder="Port"/><Entry x:Name="UserEntry" Grid.Column="1" Text="root" Placeholder="User"/></Grid>
+      <Entry x:Name="PassEntry" IsPassword="True" Placeholder="Password"/>
+      <Label x:Name="KeyHint" Text="SSH: leave the password empty to use the saved key." FontSize="12" TextColor="{DynamicResource Dim}"/>
+      <HorizontalStackLayout Spacing="8"><CheckBox x:Name="RememberCheck" Color="{DynamicResource Accent}"/><Label Text="Remember password on this device (encrypted)" VerticalOptions="Center" FontSize="13"/></HorizontalStackLayout>
+      <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+        <Button x:Name="ConnectBtn" Text="Connect" Clicked="OnConnect" WidthRequest="130" HeightRequest="48"/>
+        <Border x:Name="StateBanner" Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center" MinimumHeightRequest="48" Padding="16,0" StrokeThickness="0" StrokeShape="RoundRectangle 24" Background="{DynamicResource GlassOff}"><Label x:Name="StateLabel" Text="&#9675;  Disconnected" FontSize="14" FontAttributes="Bold" VerticalOptions="Center" TextColor="{DynamicResource OnOff}"/></Border>
+      </Grid>
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="8"><Button HeightRequest="48" Text="Save profile" Clicked="OnSaveProfile" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/><Button HeightRequest="48" Grid.Column="1" Text="Delete profile" Clicked="OnDeleteProfile" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/></Grid>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+</VerticalStackLayout></ScrollView>
+  </Grid>
+</ContentPage>

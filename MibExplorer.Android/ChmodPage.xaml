@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.ChmodPage" Title="Permissions" BackgroundColor="{DynamicResource Bg}">
+  <ScrollView><VerticalStackLayout Padding="16" Spacing="12" MaximumWidthRequest="640" HorizontalOptions="Fill">
+    <Label x:Name="PathLabel" TextColor="{DynamicResource Text}" FontAttributes="Bold" LineBreakMode="MiddleTruncation"/>
+    <Label x:Name="OwnerLabel" TextColor="{DynamicResource Muted}" FontSize="12"/>
+    <Grid ColumnDefinitions="*,60,60,60" RowDefinitions="Auto,48,48,48" ColumnSpacing="4">
+      <Label Grid.Column="1" Text="Read" TextColor="{DynamicResource Accent2}" HorizontalOptions="Center"/><Label Grid.Column="2" Text="Write" TextColor="{DynamicResource Accent2}" HorizontalOptions="Center"/><Label Grid.Column="3" Text="Execute" TextColor="{DynamicResource Accent2}" HorizontalOptions="Center"/>
+      <Label Grid.Row="1" Text="Owner" TextColor="{DynamicResource Text}" VerticalOptions="Center"/>
+      <Label Grid.Row="2" Text="Group" TextColor="{DynamicResource Text}" VerticalOptions="Center"/>
+      <Label Grid.Row="3" Text="Others" TextColor="{DynamicResource Text}" VerticalOptions="Center"/>
+      <CheckBox x:Name="C00" Grid.Row="1" Grid.Column="1" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/><CheckBox x:Name="C01" Grid.Row="1" Grid.Column="2" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/><CheckBox x:Name="C02" Grid.Row="1" Grid.Column="3" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/>
+      <CheckBox x:Name="C10" Grid.Row="2" Grid.Column="1" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/><CheckBox x:Name="C11" Grid.Row="2" Grid.Column="2" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/><CheckBox x:Name="C12" Grid.Row="2" Grid.Column="3" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/>
+      <CheckBox x:Name="C20" Grid.Row="3" Grid.Column="1" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/><CheckBox x:Name="C21" Grid.Row="3" Grid.Column="2" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/><CheckBox x:Name="C22" Grid.Row="3" Grid.Column="3" Color="{DynamicResource Accent}" CheckedChanged="OnGrid"/>
+    </Grid>
+    <Entry x:Name="OctalEntry" Placeholder="Octal, for example 755" Keyboard="Numeric" MaxLength="4" TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource Dim}" TextChanged="OnOctal"/>
+    <Label x:Name="SymLabel" TextColor="{DynamicResource Accent2}" FontFamily="monospace"/>
+    <Label x:Name="Preview" TextColor="{DynamicResource Muted}" FontSize="12" FontFamily="monospace"/>
+    <Label x:Name="Gate" TextColor="{DynamicResource Warn}" FontSize="13"/>
+    <Label Text="Recursive change is not available. Only this one item is changed." TextColor="{DynamicResource Dim}" FontSize="12"/>
+    <Button x:Name="ApplyBtn" Text="Apply" Clicked="OnApply" Background="{DynamicResource GlassPrimary}" TextColor="{DynamicResource OnPrimary}" FontAttributes="Bold" CornerRadius="12" MinimumHeightRequest="48"/>
+    <Label x:Name="Result" TextColor="{DynamicResource Text}" FontSize="13"/>
+  </VerticalStackLayout></ScrollView>
+</ContentPage>

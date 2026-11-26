@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.TransfersPage" Title="Transfers" BackgroundColor="{DynamicResource Bg}">
+  <Grid RowDefinitions="Auto,*" Padding="12" RowSpacing="8">
+    <Button Text="Clear finished" Clicked="OnClear" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" CornerRadius="10"/>
+    <ScrollView Grid.Row="1"><VerticalStackLayout x:Name="Body" Spacing="6"/></ScrollView>
+  </Grid>
+</ContentPage>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.EditorPage" Title="Text editor" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="10"/><Setter Property="MinimumHeightRequest" Value="44"/></Style>
+  </ContentPage.Resources>
+  <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Padding="10" RowSpacing="6">
+    <Label x:Name="PathLbl" FontFamily="monospace" FontSize="12" TextColor="{DynamicResource Accent2}"/>
+    <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="6">
+      <Button x:Name="EditBtn" Text="Edit" Clicked="OnEdit" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+      <Button x:Name="DiffBtn" Grid.Column="1" Text="Diff" Clicked="OnDiff" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+      <Button x:Name="WsBtn" Grid.Column="2" Text="Ignore spaces: off" Clicked="OnWs" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+    </Grid>
+    <Grid Grid.Row="2" x:Name="DiffBar" IsVisible="False" ColumnDefinitions="*,*,*,*,*" ColumnSpacing="4">
+      <Button Text="Prev" Clicked="OnPrevDiff" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" Padding="2"/>
+      <Label x:Name="PosLbl" Grid.Column="1" Text="0/0" HorizontalTextAlignment="Center" VerticalOptions="Center" TextColor="{DynamicResource Text}"/>
+      <Button Grid.Column="2" Text="Next" Clicked="OnNextDiff" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" Padding="2"/>
+      <Button x:Name="InvBtn" Grid.Column="3" Text="Invisibles: off" Clicked="OnInv" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" Padding="2" FontSize="11"/>
+      <Button x:Name="ColBtn" Grid.Column="4" Text="Collapse: on" Clicked="OnCol" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}" Padding="2" FontSize="11"/>
+    </Grid>
+    <Editor x:Name="Ed" Grid.Row="3" FontFamily="monospace" FontSize="12" TextColor="{DynamicResource Text}" BackgroundColor="{DynamicResource CardSolid}" TextChanged="OnChanged"/>
+    <ScrollView x:Name="DiffScroll" Grid.Row="3" IsVisible="False" BackgroundColor="{DynamicResource CardSolid}"><VerticalStackLayout x:Name="DiffBody" Spacing="0"/></ScrollView>
+    <VerticalStackLayout Grid.Row="4" Spacing="4">
+      <Button x:Name="SaveBtn" Text="Save to unit" Clicked="OnSave" Background="{DynamicResource GlassDanger}" TextColor="White" IsEnabled="False"/>
+      <Label x:Name="Status" FontSize="12" TextColor="{DynamicResource Muted}"/>
+    </VerticalStackLayout>
+  </Grid>
+</ContentPage>

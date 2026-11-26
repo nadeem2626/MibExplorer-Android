@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.LicensesPage" Title="Licenses" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="12"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style x:Key="H" TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource HeaderText}"/><Setter Property="TextTransform" Value="Uppercase"/><Setter Property="Padding" Value="12,8"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="FontSize" Value="13"/><Setter Property="VerticalTextAlignment" Value="Center"/></Style>
+    <Style x:Key="HeadBox" TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassHeader}"/><Setter Property="StrokeThickness" Value="0"/><Setter Property="Padding" Value="0"/><Setter Property="StrokeShape"><Setter.Value><RoundRectangle CornerRadius="17,17,0,0"/></Setter.Value></Setter></Style>
+    <Style TargetType="Entry"><Setter Property="TextColor" Value="{DynamicResource Text}"/><Setter Property="PlaceholderColor" Value="{DynamicResource Dim}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+
+  <ScrollView><VerticalStackLayout Padding="16" Spacing="14" MaximumWidthRequest="760" HorizontalOptions="Fill">
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="MIBEXPLORER" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="6">
+      <Label Text="This android version is built and developed by Nadeem based on original desktop verison for djskual" FontSize="13"/>
+      <Label Text="Source: github.com/djskual/MibExplorer" FontSize="13"/>
+      <Label Text="License: MIT, as stated in the project README. The repository does not contain a license file or a copyright line, so none is reproduced here." FontSize="13"/>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="Third-party components" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="6">
+      <Label x:Name="Third" FontSize="12" FontFamily="monospace"/>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+  </VerticalStackLayout></ScrollView>
+</ContentPage>

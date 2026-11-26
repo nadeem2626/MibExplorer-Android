@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.DetailsPage" Title="Details" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="14"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassSecondary}"/><Setter Property="TextColor" Value="{DynamicResource OnSecondary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="40"/><Setter Property="Padding" Value="14,0"/></Style>
+  </ContentPage.Resources>
+  <ScrollView>
+    <VerticalStackLayout Padding="12" Spacing="10">
+      <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never"><Label x:Name="TitleLabel" FontAttributes="Bold" FontSize="16" LineBreakMode="NoWrap"/></ScrollView>
+      <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never"><HorizontalStackLayout Spacing="8">
+        <Button x:Name="DownloadBtn" Text="Download" Clicked="OnDownload"/>
+        <Button x:Name="EditBtn" Text="Edit" Clicked="OnEdit"/>
+        <Button x:Name="TermBtn" Text="Open in terminal" Clicked="OnTerminal"/>
+      </HorizontalStackLayout></ScrollView>
+      <Label x:Name="Note" FontSize="12" TextColor="{DynamicResource Muted}"/>
+      <Grid x:Name="Cards" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+        <Border x:Name="DetailsCard"><VerticalStackLayout x:Name="Kv" Spacing="6"><Label Text="Details" TextColor="{DynamicResource Accent2}" FontAttributes="Bold" FontSize="13"/></VerticalStackLayout></Border>
+        <Border x:Name="PreviewCard"><VerticalStackLayout Spacing="6"><Label x:Name="PreviewHead" Text="Text preview (read-only)" TextColor="{DynamicResource Accent2}" FontAttributes="Bold" FontSize="13"/><Label x:Name="PreviewText" FontFamily="monospace" FontSize="13" Text="Loading..."/></VerticalStackLayout></Border>
+      </Grid>
+    </VerticalStackLayout>
+  </ScrollView>
+</ContentPage>

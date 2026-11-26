@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell Shell.BackgroundColor="{DynamicResource Bg}" Shell.TitleColor="{DynamicResource Text}" Shell.ForegroundColor="{DynamicResource Text}" Shell.NavBarHasShadow="False"
+    Shell.TabBarBackgroundColor="{DynamicResource Rail2}" Shell.TabBarForegroundColor="{DynamicResource Accent2}" Shell.TabBarTitleColor="{DynamicResource Accent2}" Shell.TabBarUnselectedColor="{DynamicResource Muted}"
+    x:Class="MibExplorer.Android.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MibExplorer.Android"
+    Title="MibExplorer">
+
+    <TabBar>
+        <ShellContent Title="Connect" Icon="tab_connect.png" ContentTemplate="{DataTemplate local:ConnectPage}" Route="Connect" />
+        <ShellContent Title="Files" Icon="tab_files.png" ContentTemplate="{DataTemplate local:FilesPage}" Route="Files" />
+        <ShellContent Title="Coding" Icon="tab_coding.png" ContentTemplate="{DataTemplate local:CodingPage}" Route="Coding" />
+        <ShellContent Title="Adaptations" Icon="tab_adapt.png" ContentTemplate="{DataTemplate local:AdaptationsPage}" Route="Adaptations" />
+        <ShellContent Title="Tools" Icon="tab_tools.png" ContentTemplate="{DataTemplate local:ToolsPage}" Route="Tools" />
+    </TabBar>
+
+</Shell>

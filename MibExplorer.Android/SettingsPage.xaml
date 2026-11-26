@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MibExplorer.Android.SettingsPage" Title="Settings" BackgroundColor="{DynamicResource Bg}">
+  <ContentPage.Resources>
+    <Style TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassCard}"/><Setter Property="Stroke" Value="{DynamicResource GlassStroke}"/><Setter Property="StrokeThickness" Value="1"/><Setter Property="Padding" Value="12"/><Setter Property="StrokeShape" Value="RoundRectangle 18"/></Style>
+    <Style TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource Text}"/></Style>
+    <Style x:Key="H" TargetType="Label"><Setter Property="TextColor" Value="{DynamicResource HeaderText}"/><Setter Property="TextTransform" Value="Uppercase"/><Setter Property="Padding" Value="12,8"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="FontSize" Value="13"/><Setter Property="VerticalTextAlignment" Value="Center"/></Style>
+    <Style x:Key="HeadBox" TargetType="Border"><Setter Property="Background" Value="{DynamicResource GlassHeader}"/><Setter Property="StrokeThickness" Value="0"/><Setter Property="Padding" Value="0"/><Setter Property="StrokeShape"><Setter.Value><RoundRectangle CornerRadius="17,17,0,0"/></Setter.Value></Setter></Style>
+    <Style TargetType="Entry"><Setter Property="TextColor" Value="{DynamicResource Text}"/><Setter Property="PlaceholderColor" Value="{DynamicResource Dim}"/></Style>
+    <Style TargetType="Button"><Setter Property="Background" Value="{DynamicResource GlassPrimary}"/><Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/><Setter Property="FontAttributes" Value="Bold"/><Setter Property="CornerRadius" Value="12"/><Setter Property="MinimumHeightRequest" Value="48"/></Style>
+  </ContentPage.Resources>
+
+  <ScrollView x:Name="Scroller"><VerticalStackLayout Padding="16" Spacing="14" MaximumWidthRequest="760" HorizontalOptions="Fill">
+    <Border x:Name="WriteCard" Stroke="{DynamicResource Accent}" StrokeThickness="2" Padding="0"><VerticalStackLayout Spacing="0">
+      <Border x:Name="WriteHeaderBox" Style="{StaticResource HeadBox}"><Border.StrokeShape><RoundRectangle CornerRadius="16,16,0,0"/></Border.StrokeShape><Label x:Name="WriteHeading" Text="Write mode" Style="{StaticResource H}" FontSize="16"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="8">
+      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12"><Label x:Name="WriteText" Text="Write mode (this connection)" FontSize="15" FontAttributes="Bold" VerticalOptions="Center"/><Switch x:Name="WriteSwitch" Grid.Column="1" OnColor="{DynamicResource Accent}" Toggled="OnWriteToggled" MinimumHeightRequest="48"/></Grid>
+      <Label Text="Off by default every time you connect. Changes on the unit need this on, plus the typed confirmation for each action." FontSize="12" TextColor="{DynamicResource Muted}"/>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="Appearance" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="8">
+      <Picker x:Name="ThemePicker" Title="Theme" TextColor="{DynamicResource Text}" TitleColor="{DynamicResource Muted}" MinimumHeightRequest="48" SelectedIndexChanged="OnThemeChanged"/>
+      <Label Text="Automatic follows the Device setting. Night is the default." FontSize="12" TextColor="{DynamicResource Muted}"/>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+    <Border x:Name="SshCard"><VerticalStackLayout Spacing="2">
+      <Grid ColumnDefinitions="*,Auto"><Label Text="SSH key" TextColor="{DynamicResource Muted}" VerticalOptions="Center"/>
+        <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End"><Label x:Name="KeyInfo" FontSize="13" FontAttributes="Bold" VerticalOptions="Center"/><Label Text=" &#183; " VerticalOptions="Center"/><Button Text="Show public key" Clicked="OnShowPub" TextColor="{DynamicResource Accent2}" Background="Transparent" FontAttributes="Bold" FontSize="13" Padding="8,0" MinimumHeightRequest="36"/></HorizontalStackLayout></Grid>
+      <Grid ColumnDefinitions="*,Auto"><Label Text="" /><HorizontalStackLayout Grid.Column="1" HorizontalOptions="End"><Button Text="Copy" Clicked="OnCopyPub" TextColor="{DynamicResource Accent2}" Background="Transparent" FontAttributes="Bold" FontSize="13" Padding="8,0" MinimumHeightRequest="36"/><Button Text="Generate new" Clicked="OnNewKey" TextColor="{DynamicResource Accent2}" Background="Transparent" FontAttributes="Bold" FontSize="13" Padding="8,0" MinimumHeightRequest="36"/></HorizontalStackLayout></Grid>
+      <Grid ColumnDefinitions="*,Auto"><Label Text="Trusted hosts" TextColor="{DynamicResource Muted}" VerticalOptions="Center"/>
+        <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End"><Label x:Name="HostsInfo" FontSize="13" FontAttributes="Bold" VerticalOptions="Center"/><Label Text=" &#183; " VerticalOptions="Center"/><Button Text="Manage" Clicked="OnHosts" TextColor="{DynamicResource Accent2}" Background="Transparent" FontAttributes="Bold" FontSize="13" Padding="8,0" MinimumHeightRequest="36"/></HorizontalStackLayout></Grid>
+      <Grid ColumnDefinitions="*,Auto"><Label Text="Diagnostics" TextColor="{DynamicResource Muted}" VerticalOptions="Center"/><Button Grid.Column="1" Text="Show startup log" Clicked="OnDiag" TextColor="{DynamicResource Accent2}" Background="Transparent" FontAttributes="Bold" FontSize="13" Padding="8,0" MinimumHeightRequest="36"/></Grid>
+      <Label Text="Write mode is always off after you connect; no setting turns it on by default. The private key never leaves this device's secure storage and is never shown. A new key replaces the current one and the old one is kept as previous (the unit must accept the new public key first)." FontSize="11" TextColor="{DynamicResource Dim}" Margin="0,6,0,0"/>
+    </VerticalStackLayout></Border>
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="Import an SSH private key" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="8">
+      <Entry x:Name="KeyPassEntry" Placeholder="Passphrase of the key to import (leave empty if none)" IsPassword="True"/>
+      <Button Text="Import private key file..." Clicked="OnImportKey" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+      <Label Text="Stored encrypted with the Android Keystore. The result appears in the SSH key line above." FontSize="11" TextColor="{DynamicResource Dim}"/>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="Scripts folder" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="6">
+      <Label x:Name="ScriptsFolderLbl" FontSize="11" TextColor="{DynamicResource Muted}" LineBreakMode="CharacterWrap"/>
+      <Label Text="Scripts are kept in this app's private storage. Use Import .sh on the Scripts tab to add your own scripts." FontSize="12" TextColor="{DynamicResource Dim}"/>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+    <Border Padding="0"><VerticalStackLayout Spacing="0">
+      <Border Style="{StaticResource HeadBox}"><Label Text="Licenses" Style="{StaticResource H}"/></Border>
+      <VerticalStackLayout Padding="12" Spacing="6">
+      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+        <Button Text="Licenses" Clicked="OnLicenses" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+        <Button Grid.Column="1" Text="About" Clicked="OnAbout" Background="{DynamicResource GlassSecondary}" TextColor="{DynamicResource OnSecondary}"/>
+      </Grid>
+      </VerticalStackLayout>
+    </VerticalStackLayout></Border>
+  </VerticalStackLayout></ScrollView>
+</ContentPage>
