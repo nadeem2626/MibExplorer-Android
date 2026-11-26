@@ -15,15 +15,22 @@
       <Button x:Name="TabR" Text="Raw" Clicked="OnTab" CommandParameter="R" FontSize="13" MinimumHeightRequest="48" HeightRequest="48" Padding="12,0" Margin="0,0,4,4"/>
       <Button x:Name="TabC" Text="Changes" Clicked="OnTab" CommandParameter="C" FontSize="13" MinimumHeightRequest="48" HeightRequest="48" Padding="12,0" Margin="0,0,4,4"/>
       <Button x:Name="TabH" Text="History" Clicked="OnTab" CommandParameter="H" FontSize="13" MinimumHeightRequest="48" HeightRequest="48" Padding="12,0" Margin="0,0,10,4"/>
-      <Button x:Name="WriteBtn" Text="Write unavailable" Clicked="OnWrite" IsEnabled="False" Background="{DynamicResource GlassDanger}" TextColor="White" MinimumHeightRequest="48" HeightRequest="48" Padding="14,0" FontSize="13" Margin="0,0,0,4"/>
+      <Button x:Name="WriteBtn" Text="Write coding" Clicked="OnWrite" Background="{DynamicResource GlassDanger}" TextColor="White" MinimumHeightRequest="48" HeightRequest="48" Padding="14,0" FontSize="13" Margin="0,0,0,4"/>
       </HorizontalStackLayout></ScrollView>
       <Grid Grid.Column="1" VerticalOptions="Center">
       <SearchBar x:Name="Search" Placeholder="Filter features" TextChanged="OnSearch" BackgroundColor="{DynamicResource CardSolid}" TextColor="{DynamicResource Text}" PlaceholderColor="{DynamicResource Dim}" HeightRequest="48" WidthRequest="230"  Margin="0,0,0,0"/>
       </Grid>
     </Grid>
     <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="0">
-      <Label Text="Read only. Writing coding is unavailable: the generic feature list is not verified for this unit." FontSize="12" TextColor="{DynamicResource Warn}" LineBreakMode="WordWrap" MaxLines="3"/>
-      <HorizontalStackLayout Spacing="12"><Label x:Name="Vin" TextColor="{DynamicResource Muted}" FontSize="12"/><Label x:Name="Status" FontSize="12" TextColor="{DynamicResource Muted}"/></HorizontalStackLayout>
+      <Label Text="Change values, then Write coding (needs Write mode, SSH and typing CODING). The feature list is generic and not verified for this unit." FontSize="12" TextColor="{DynamicResource Warn}" LineBreakMode="WordWrap" MaxLines="3"/>
+      <Label x:Name="Vin" TextColor="{DynamicResource Muted}" FontSize="12" LineBreakMode="WordWrap"/>
+      <Label x:Name="Status" FontSize="13" TextColor="{DynamicResource Muted}" LineBreakMode="WordWrap"/>
+      <Border x:Name="ResultCard" IsVisible="False" Padding="12,8" Margin="0,4,0,4"><VerticalStackLayout Spacing="4">
+        <Label x:Name="ResultHead" FontSize="22" FontAttributes="Bold" LineBreakMode="WordWrap"/>
+        <Label x:Name="ResultWhy" FontSize="16" LineBreakMode="WordWrap"/>
+        <Label x:Name="ResultNext" FontSize="16" FontAttributes="Bold" LineBreakMode="WordWrap"/>
+        <Button Text="OK" Clicked="OnResultOk" HorizontalOptions="Start" MinimumHeightRequest="44" HeightRequest="44" Padding="20,0" Margin="0,4,0,0"/>
+      </VerticalStackLayout></Border>
     </VerticalStackLayout>
     <ScrollView x:Name="ListScroll" Grid.Row="2"><VerticalStackLayout x:Name="Body" Spacing="0" HorizontalOptions="Fill"/></ScrollView>
     <Border x:Name="DetailCard" Grid.Row="2" Grid.Column="1" IsVisible="False" Padding="0"><ScrollView><VerticalStackLayout x:Name="Detail" Spacing="0"/></ScrollView></Border>

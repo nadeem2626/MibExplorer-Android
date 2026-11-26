@@ -28,9 +28,22 @@ public partial class CodingPage : ContentPage
     private void OnSearch(object? s, TextChangedEventArgs e) { if (_tab == "F") Refresh(); }
     // Fail closed: the feature list is a generic MIB2 5F catalog with inferred entries, there is no evidence it applies to the connected unit,
     // and a write replaces the whole 25 byte blob. Reading, decoding, raw view, snapshots and history stay available. Turn on only with applicability evidence.
-    private const bool WritesAvailable = false;
-    private const string ReadOnlyNote = "Coding is read only. The feature list is a generic MIB2 5F catalog that has not been verified for this unit, so changes cannot be made or written.";
+    private const bool WritesAvailable = true;
+    // You can change values on this screen (working copy only, nothing leaves the tablet). Sending them to the unit stays locked.
+    private const string ReadOnlyNote = "Writing to the unit is locked: the feature list is a generic MIB2 5F catalog that has not been verified for this unit. Your changes stay on this screen.";
     private bool Loaded => _orig.Length > 0;
+
+
+    private void OnResultOk(object? s, EventArgs e) => ResultCard.IsVisible = false;
+
+    // kind: 0 = written OK (read-back equals target), 1 = not written, 2 = not confirmed / failed
+    private void ShowResult(int kind, string head, string why, string next)
+    {
+        Color c = kind == 0 ? Color.FromArgb("#1B7F3B") : kind == 1 ? Color.FromArgb("#B26A00") : Color.FromArgb("#B3261E");
+        ResultHead.Text = head; ResultHead.TextColor = c;
+        ResultWhy.Text = why; ResultNext.Text = next;
+        ResultCard.Stroke = c; ResultCard.StrokeThickness = 3; ResultCard.IsVisible = true;
+    }
 
     private async void OnRead(object? s, EventArgs e)
     {
@@ -64,7 +77,7 @@ public partial class CodingPage : ContentPage
         if (!Loaded) { Body.Children.Add(new Label { Text = "Read the coding first.", TextColor = Theme.C("Muted") }); WriteBtn.IsEnabled = false; return; }
         switch (_tab) { case "F": BuildFeatures(); break; case "R": BuildRaw(); break; case "C": BuildChanges(); break; case "H": BuildHistory(); break; }
         WriteBtn.IsEnabled = WritesAvailable && Session.WriteMode && ByteDiffs > 0;
-        WriteBtn.Text = !WritesAvailable ? "Write unavailable" : ByteDiffs > 0 ? $"Write coding ({ByteDiffs} byte(s) changed)" : "Write coding";
+        WriteBtn.Text = ByteDiffs > 0 ? $"Write coding ({ByteDiffs} byte(s) changed)" : "Write coding";
         if (!Session.WriteMode) Status.Text = "Write mode is off (Settings).";
     }
 
@@ -114,7 +127,7 @@ public partial class CodingPage : ContentPage
         BuildDetail(list.FirstOrDefault(f => f.Id == _selId));
     }
 
-    // Right-hand pane: the selected feature and its catalog options. Choosing is shown but disabled: feature writes are not supported (see WritesAvailable).
+    // Right-hand pane: the selected feature and its catalog options. Tapping a value changes the on-screen working copy only; sending to the unit needs Write mode, SSH and the typed CODING confirmation.
     private void BuildDetail(CodingFeatureValue? f)
     {
         Detail.Children.Clear();
@@ -129,13 +142,20 @@ public partial class CodingPage : ContentPage
         head.Children.Add(new Label { Text = f.Label, FontSize = 18, FontAttributes = FontAttributes.Bold });
         head.Children.Add(new Label { Text = $"byte {f.Byte}  mask 0x{f.Mask:X2}  shift {f.Shift}  read value: {f.Value} ({f.RawValue})", FontSize = 11, TextColor = Theme.C("Muted") });
         Detail.Children.Add(head);
-        Detail.Children.Add(new Label { Text = "Changing this value is unavailable. Feature writes are not supported until this catalog is verified for the connected unit.", FontSize = 12, TextColor = Theme.C("Warn"), Margin = new Thickness(12, 0, 12, 6) });
+        Detail.Children.Add(new Label { Text = "Tap a value to change it on this screen. Nothing is sent to the unit: writing is locked until this catalog is verified for it.", FontSize = 12, TextColor = Theme.C("Warn"), Margin = new Thickness(12, 0, 12, 6) });
         foreach (var opt in f.Options)
         {
             bool cur = opt.Raw == f.RawValue;
             var r = new HorizontalStackLayout { Spacing = 12, Padding = new Thickness(12, 0), HeightRequest = 48 };
             r.Children.Add(new Label { Text = cur ? "\u25C9" : "\u25CB", FontSize = 20, VerticalOptions = LayoutOptions.Center, TextColor = cur ? Theme.C("Accent") : Theme.C("Dim2") });
             r.Children.Add(new Label { Text = $"{opt.Label}  ({opt.Raw})", FontSize = 15, VerticalOptions = LayoutOptions.Center, TextColor = cur ? Theme.C("Text") : Theme.C("Muted") });
+            var feat = f; var o = opt;
+            r.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() =>
+            {
+                if (o.Raw == feat.RawValue) return;
+                if (!int.TryParse(o.Raw, out int raw) || !CodingEditing.SetField(_cur, feat.Byte, feat.Mask, feat.Shift, raw)) { Status.Text = "Value does not fit this field."; return; }
+                Refresh();
+            }) });
             Detail.Children.Add(r);
         }
     }
@@ -154,7 +174,7 @@ public partial class CodingPage : ContentPage
                 int bb = bit; bool on = (_cur[i] & (1 << bit)) != 0; bool diff = on != ((_orig[i] & (1 << bit)) != 0);
                 var b = new Button { Text = on ? "1" : "0", WidthRequest = 48, HeightRequest = 48, MinimumHeightRequest = 48, Padding = 0, FontSize = 12, CornerRadius = 6,
                     Background = diff ? UiGlass.Amber : on ? UiGlass.Primary : UiGlass.Secondary, TextColor = on || diff ? Theme.C("OnPrimary") : Theme.C("OnSecondary") };
-                b.Clicked += (s, e) => { if (!WritesAvailable) { Status.Text = ReadOnlyNote; Refresh(); return; } CodingEditing.SetBit(_cur, bi, bb, (_cur[bi] & (1 << bb)) == 0); Refresh(); };
+                b.Clicked += (s, e) => { CodingEditing.SetBit(_cur, bi, bb, (_cur[bi] & (1 << bb)) == 0); Refresh(); };
                 row.Children.Add(b);
             }
             Body.Children.Add(row);
@@ -163,7 +183,6 @@ public partial class CodingPage : ContentPage
         var apply = new Button { Text = "Apply hex" };
         apply.Clicked += (s, e) =>
         {
-            if (!WritesAvailable) { Status.Text = ReadOnlyNote; Refresh(); return; }
             try { var n = CodingEditing.FromHex(hex.Text ?? ""); if (n.Length != _orig.Length) throw new FormatException($"Length must stay {_orig.Length} bytes."); _cur = n; Refresh(); }
             catch (Exception ex) { Status.Text = "Hex rejected: " + ex.Message; }
         };
@@ -205,7 +224,6 @@ public partial class CodingPage : ContentPage
             var load = new Button { Text = "Load into editor", Background = UiGlass.Secondary, TextColor = Theme.C("OnSecondary") };
             load.Clicked += (s, e) =>
             {
-                if (!WritesAvailable) { Status.Text = ReadOnlyNote; Refresh(); return; }
                 byte[] b; try { b = CodingEditing.FromHex(snap.CodingHex); } catch (Exception ex) { Status.Text = "This snapshot is damaged: " + ex.Message; return; }
                 if (b.Length != _orig.Length) { Status.Text = "Snapshot length differs from the unit's coding."; return; }
                 _cur = b; _tab = "C"; Refresh();
@@ -224,15 +242,8 @@ public partial class CodingPage : ContentPage
         if (!WritesAvailable) { Status.Text = ReadOnlyNote; return; }
         if (Session.Svc is null || !Session.WriteMode || ByteDiffs == 0) return;
         var wsvc = Session.Svc; // this operation belongs to this connection only
-        if (!ReferenceEquals(_boundSvc, Session.Svc)) { Status.Text = "The connection changed since the coding was read. Read the coding again first. Nothing was written."; return; }
-        if (Session.Protocol != "SSH") { Status.Text = "Coding writes need an SSH connection. The connection changed since this page opened."; return; }
-        try
-        {
-            Status.Text = "Re-reading the coding from the unit before writing...";
-            var chk = await Task.Run(() => new CodingCenterService(wsvc).Read5FCodingAsync(null));
-            if (!string.Equals(chk.CodingHex?.Trim(), CodingEditing.ToHex(_orig).Trim(), StringComparison.OrdinalIgnoreCase)) { Status.Text = "The coding on the unit is not what you read earlier (it changed). Read it again first. Nothing was written."; return; }
-        }
-        catch (Exception ex) { Status.Text = "Could not re-read the coding: " + ex.Message + " Nothing was written."; return; }
+        if (!ReferenceEquals(_boundSvc, Session.Svc)) { ShowResult(1, "NOT WRITTEN", "The connection changed since the coding was read.", "Tap Read from unit, then try again."); return; }
+        if (Session.Protocol != "SSH") { ShowResult(1, "NOT WRITTEN", "Coding writes need an SSH connection.", "Connect with SSH, then read the coding again."); return; }
         string target = CodingEditing.ToHex(_cur);
         var p = Pending;
         var sb = new StringBuilder();
@@ -245,19 +256,21 @@ public partial class CodingPage : ContentPage
             async () => string.Equals((await DisplayPromptAsync("Write coding", sb + "\nThis writes the full coding blob to " + Session.Host + ". The feature list is a generic MIB2 5F catalog and was not checked against this unit's model, so the meaning of each bit on this unit is not verified. Type CODING to confirm.", "Write", "Cancel"))?.Trim(), "CODING", StringComparison.Ordinal),
             async owner =>
             {
-                try { Status.Text = "Saving snapshot..."; await _history.AddSnapshotAsync(_vin, CodingEditing.ToHex(_orig), _orig.Length, "Before write", p, ""); }
-                catch (Exception ex) { Status.Text = "Nothing was written: the History snapshot could not be saved first: " + ex.Message; return; }
-                try
-                {
-                    Status.Text = "Writing..."; var svc = new CodingCenterService(owner);
-                    var r = await Task.Run(() => svc.Write5FCodingAsync(target, null));
-                    Status.Text = (r.Success ? "Write reported success and read back. " : "Write failed. ") + r.Message;
-                    if (r.Success) { _orig = CodingEditing.FromHex(r.AfterHex); _cur = (byte[])_orig.Clone(); }
-                    _snaps = await _history.LoadSnapshotsAsync(_vin);
-                }
-                catch (Exception ex) { Status.Text = "Write failed or its result could not be read back: " + ex.Message + " Read the coding again before doing anything else."; }
-            });
-        if (res != GuardResult.Done && res != GuardResult.Declined) Status.Text = ConfirmedAction.Describe(res, "written");
+                Status.Text = "Re-reading, saving snapshot, writing...";
+                var svc = new CodingCenterService(owner); string orig = CodingEditing.ToHex(_orig);
+                var o = await CodingWriteFlow.RunAsync(_vin, orig, target,
+                    async () => (await Task.Run(() => svc.Read5FCodingAsync(null))).CodingHex ?? "",
+                    async () => { await _history.AddSnapshotAsync(_vin, orig, _orig.Length, "Before write", p, ""); },
+                    t => Task.Run(() => svc.Write5FCodingAsync(t, null)));
+                Status.Text = "";
+                if (o.VerifiedReadback) ShowResult(0, "STORED AND READ BACK", "The new coding was saved in the unit's storage and reading it back gives exactly the new value.", "This does NOT mean the unit is using it yet. Check the change on the unit. If you do not see it, restart the unit. This app has not verified whether that is needed.");
+                else if (!o.Written) ShowResult(1, "NOT WRITTEN", o.Message.Replace("Nothing was written: ", "").Replace("Nothing was written.", "").Trim(), "Nothing on the unit was changed. Fix the reason above, then read the coding again.");
+                else ShowResult(2, "NOT CONFIRMED", o.Message, "The unit may hold a different coding than intended. Do not write again. Tap Read from unit and check the Raw tab first; the snapshot in History is the old value.");
+                if (o.VerifiedReadback) { _orig = CodingEditing.FromHex(o.AfterHex); _cur = (byte[])_orig.Clone(); }
+                try { _snaps = await _history.LoadSnapshotsAsync(_vin); } catch { }
+                        });
+        if (res == GuardResult.Declined) ShowResult(1, "NOT WRITTEN", "The CODING confirmation was cancelled or not typed exactly.", "Nothing on the unit was changed.");
+        else if (res != GuardResult.Done) ShowResult(1, "NOT WRITTEN", ConfirmedAction.Describe(res, "written"), "Nothing on the unit was changed. Check Write mode and the SSH connection, then read the coding again.");
         Refresh();
     }
 }

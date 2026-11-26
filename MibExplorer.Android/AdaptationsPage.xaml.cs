@@ -139,8 +139,13 @@ public partial class AdaptationsPage : ContentPage
     private async Task ItemMenu(AdaptationCatalogItem a, AdaptationCatalogGroup? g)
     {
         bool canEdit = a.Ui.Editable && a.Storage.Mapped && a.Storage.PhysicalKeys.Count == 1 && _raw.ContainsKey(a.Id) && Session.WriteMode && Session.Protocol == "SSH";
-        string? pick = await this.Sheet(a.Label, "Close", null, canEdit ? new[] { "Details", "Stage change (apply later with others)", "Change this one now" } : new[] { "Details" });
+        bool hasChoices = a.Ui.Values.Count > 0 || a.Ui.Min is not null || a.Ui.Max is not null;
+        var opts = new List<string> { "Details" };
+        if (hasChoices) opts.Add("Choices (view only)");
+        if (canEdit) { opts.Add("Stage change (apply later with others)"); opts.Add("Change this one now"); }
+        string? pick = await this.Sheet(a.Label, "Close", null, opts.ToArray());
         if (pick == "Details") { await DisplayAlert(a.Label, Describe(a), "OK"); return; }
+        if (pick == "Choices (view only)") { await DisplayAlert(a.Label, Choices(a), "OK"); return; }
         if (pick is null || !(pick.StartsWith("Stage") || pick.StartsWith("Change this"))) return;
         var labels = a.Ui.Values.Where(v => !string.Equals(v.Label, "Reset selection", StringComparison.OrdinalIgnoreCase)).Select(v => v.Label).ToArray();
         if (labels.Length == 0) { await DisplayAlert(a.Label, "No selectable values in the catalog for this item.", "OK"); return; }
@@ -246,6 +251,18 @@ public partial class AdaptationsPage : ContentPage
             await CommitAsync(tx, "Restore the value saved on " + en.CreatedAtDisplay, null, "Android: restore");
         }
         catch (Exception ex) { Status.Text = "Restore failed: " + ex.Message; }
+    }
+
+    private string Choices(AdaptationCatalogItem a)
+    {
+        var sb = new StringBuilder();
+        string? cur = _raw.TryGetValue(a.Id, out var rv) ? AdaptationDecoder.Decode(a, rv) : null;
+        sb.AppendLine(a.Ui.Editable && a.Storage.Mapped ? "Values listed in the catalog:" : "Values listed in the catalog. View only: this item cannot be changed in this app.");
+        foreach (var v in a.Ui.Values.Where(v => !string.Equals(v.Label, "Reset selection", StringComparison.OrdinalIgnoreCase)))
+            sb.AppendLine((cur is not null && string.Equals(v.Label, cur, StringComparison.Ordinal) ? "> " : "   ") + v.Label);
+        if (a.Ui.Min is not null || a.Ui.Max is not null) sb.AppendLine($"Range: {a.Ui.Min} to {a.Ui.Max} {a.Unit}");
+        sb.AppendLine(cur is null ? "Current value: not read yet (open the group and choose Read values)." : "Current value (read from the unit): " + cur + "   (marked >)");
+        return sb.ToString();
     }
 
     private string Describe(AdaptationCatalogItem a)

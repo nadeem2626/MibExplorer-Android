@@ -3,6 +3,7 @@ using Renci.SshNet;
 if (args.Length > 0 && args[0] == "proto") return await ProtocolTests.RunAsync(args);
 if (args.Length > 0 && args[0] == "one") return await OneShot.RunAsync(args);
 if (args.Length > 0 && args[0] == "coding") return await CodingTests.RunAsync();
+if (args.Length > 0 && args[0] == "codingwrite") return await CodingWriteTests.RunAsync();
 if (args.Length > 0 && args[0] == "sshone") return await SshOne.RunAsync(args);
 if (args.Length > 0 && args[0] == "terminallog") return await TerminalLogTests.RunAsync();
 if (args.Length > 0 && args[0] == "packages") return await PackageTests.RunAsync();
