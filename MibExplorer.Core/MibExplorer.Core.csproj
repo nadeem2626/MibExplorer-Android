@@ -1,0 +1,105 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>MibExplorer</RootNamespace>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Scripts\Official\**\*" LogicalName="bundled-official/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup><PackageReference Include="SSH.NET" Version="2026.0.0" /></ItemGroup>
+<ItemGroup>
+    <None Remove="Payload\sshd.zip" />
+    <EmbeddedResource Include="Payload\sshd.zip">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+<ItemGroup>
+    <None Remove="Data\Coding\mib2_5f_coding_catalog.json" />
+    <EmbeddedResource Include="Data\Coding\mib2_5f_coding_catalog.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+<ItemGroup>
+    <None Remove="Data\Adaptations\Odx\*.json.gz" />
+    <None Remove="Data\Adaptations\Odx\index.json" />
+    <EmbeddedResource Include="Data\Adaptations\Odx\*.json.gz" />
+    <EmbeddedResource Include="Data\Adaptations\Odx\index.json" />
+  </ItemGroup>
+<ItemGroup>
+    <None Remove="Data\Adaptations\adaptations_catalog.json" />
+    <EmbeddedResource Include="Data\Adaptations\adaptations_catalog.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+<ItemGroup>
+    <None Remove="Payload\CodingCenter\Read\run.sh" />
+    <None Remove="Payload\CodingCenter\Read\dumb_persistence_reader" />
+    <None Remove="Payload\CodingCenter\Write\run.sh" />
+    <None Remove="Payload\CodingCenter\Write\pc" />
+    <None Remove="Payload\CodingCenter\Write\dumb_persistence_reader" />
+
+    <EmbeddedResource Include="Payload\CodingCenter\Read\run.sh">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\CodingCenter\Read\dumb_persistence_reader">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\CodingCenter\Write\run.sh">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\CodingCenter\Write\pc">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\CodingCenter\Write\dumb_persistence_reader">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+<ItemGroup>
+    <None Remove="Payload\AdaptationsCenter\Read\run.sh" />
+    <None Remove="Payload\AdaptationsCenter\Read\pc" />
+    <None Remove="Payload\AdaptationsCenter\Vin\run.sh" />
+    <None Remove="Payload\AdaptationsCenter\Write\run.sh" />
+    <None Remove="Payload\AdaptationsCenter\Write\pc" />
+
+    <EmbeddedResource Include="Payload\AdaptationsCenter\Read\run.sh">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\AdaptationsCenter\Read\pc">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\AdaptationsCenter\Vin\run.sh">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\AdaptationsCenter\Write\run.sh">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Payload\AdaptationsCenter\Write\pc">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="Tests" /></ItemGroup>
+</Project>
