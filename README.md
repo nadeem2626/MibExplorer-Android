@@ -1,3 +1,4 @@
+
 <p align="center">
   <img src="docs/images/banner.png" alt="MibExplorer for Android" width="100%">
 </p>
@@ -32,8 +33,14 @@ Download the APK to your device, open it, and allow the install when Android ask
 Wide landscape screens get a side rail, portrait gets bottom tabs. English only.
 
 ## Screenshots
-<p align="center"><img src="docs/images/preview-files.png" alt="Files screen, design preview" width="100%"></p>
-<p align="center"><img src="docs/images/preview-connect.png" alt="Connect screen, design preview" width="49%"> <img src="docs/images/preview-tools.png" alt="Tools screen, design preview" width="49%"></p>
+
+<p align="center">
+<img width="49%" alt="Screenshot_2026-11-27-12-28-45-866_com instinct mibexplorer" src="https://github.com/user-attachments/assets/df5406f0-3326-4d3a-bdaf-963c85d800ba" />
+<img width="49%" alt="Screenshot_2026-11-27-12-29-14-906_com instinct mibexplorer" src="https://github.com/user-attachments/assets/a6ab19da-9425-44fa-8a79-bf101c2c8e7c" />
+<img width="49%" alt="Screenshot_2026-11-27-12-30-03-555_com instinct mibexplorer" src="https://github.com/user-attachments/assets/694501c1-74db-4380-a8e0-236830b0919f" />
+<img width="49%" alt="Screenshot_2026-11-27-12-30-07-571_com instinct mibexplorer" src="https://github.com/user-attachments/assets/5f4970b4-61b9-45a7-aa6b-ab0301802ed8" />
+<img width="49%" alt="Screenshot_2026-11-27-12-29-42-920_com instinct mibexplorer" src="https://github.com/user-attachments/assets/2751a46e-b745-4ded-bb52-77c5524e8988" />
+<img width="49%" alt="Screenshot_2026-11-27-12-29-31-928_com instinct mibexplorer" src="https://github.com/user-attachments/assets/f002cc8e-5876-4e1a-9970-aa458cdd9753" /></p>
 
 *Design previews drawn from the app's layout and colors, with example data. They are not screenshots and will be replaced by real ones.*
 
