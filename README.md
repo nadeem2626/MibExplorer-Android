@@ -11,9 +11,9 @@
 </p>
 
 > **Experimental.** Test builds only. Only connecting, listing and entering folders has been used on a real unit, and changes to a head unit can break it. Use at your own risk. See [Known limitations](docs/KNOWN-LIMITATIONS.md) and [Safety](docs/SAFETY.md).
-
+https://github.com/nadeem2626/MibExplorer-Android/releases/download/0.7/mibexplorer-v0.7.apk
 ## Download
-**Download APK:** [release download link]
+**Download APK:** [<a href="https://github.com/nadeem2626/MibExplorer-Android/releases">latest release</a>]
 
 Download the APK to your device, open it, and allow the install when Android asks. See [Install](docs/INSTALL.md).
 
